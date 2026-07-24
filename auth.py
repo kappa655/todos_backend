@@ -3,11 +3,14 @@ from jose import jwt, JWTError
 from datetime import datetime, timedelta, timezone
 from fastapi import HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer
+from dotenv import load_dotenv
+import os   
 
+load_dotenv()
 
-SECRET_KEY = "κάτι_πολύ_μεγάλο_και_τυχαίο"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 password_hash = PasswordHash.recommended()
 def hash_password(password: str) -> str:
