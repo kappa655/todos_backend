@@ -5,7 +5,7 @@ import os
 
 load_dotenv()
 
-# SQLite database URL
+# database URL
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Engine
