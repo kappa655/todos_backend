@@ -110,7 +110,7 @@ Database initialization
   ```
 - On app start, SQLAlchemy will create the tables defined in models.py. For production we recommend using migrations (Alembic) instead of create_all.
 
-API (summary + examples)
+API (summary)
 ------------------------
 The repository provides two router groups: users and todos. The exact path prefixes are defined in routers/*.py — below are typical endpoints and their request/response shapes inferred from the code (schemas.py). Check routers/ for the exact route paths and any additional parameters or prefixes.
 
@@ -144,33 +144,11 @@ Typical todo endpoints (protected)
 - GET /todos/{id}
   - Returns a single TodoResponse.
 - PUT /todos/{id} or PATCH /todos/{id}
-  - Body: TodoUpdate (title?, description?, completed?)
+  - Body: TodoUpdate (title, description, completed)
   - Updates the todo (only allowed for owner).
 - DELETE /todos/{id}
   - Deletes the todo (only allowed for owner).
 
-Example: register a user (curl)
-```
-curl -X POST "http://127.0.0.1:8000/users" \
-  -H "Content-Type: application/json" \
-  -d '{"username": "alice", "email": "alice@example.com", "password": "s3cretpass"}'
-```
-
-Example: login and use token to create a todo
-```
-# 1) login -> get token
-curl -X POST "http://127.0.0.1:8000/users/login" \
-  -H "Content-Type: application/json" \
-  -d '{"email": "alice@example.com", "password": "s3cretpass"}'
-
-# assume response gives {"access_token":"<token>","token_type":"bearer"}
-
-# 2) create a todo
-curl -X POST "http://127.0.0.1:8000/todos" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{"title": "Buy milk", "description": "2 liters"}'
-```
 
 Models & Schemas (from code)
 ----------------------------
@@ -197,23 +175,3 @@ Models & Schemas (from code)
   - TodoCreate: title, optional description
   - TodoUpdate: title?, description?, completed?
   - TodoResponse: id, title, description, completed
-
-Notes & development tips
-------------------------
-- The app uses SQLAlchemy's create_all on startup. For production, switch to migrations (Alembic) to manage schema changes.
-- Passwords in models are stored in a `password` column — auth.py likely contains password hashing and JWT/token generation utilities. Ensure secure password hashing (bcrypt/argon2) and secret management for tokens.
-- The dependencies.py file likely includes a dependency to load the current user from the token; use that dependency in protected routes.
-- If you change the CORS origins, update main.py.
-
-Contributing
-------------
-- Issues and PRs welcome.
-- Follow these steps for local development:
-  1. Fork and clone.
-  2. Create a feature branch.
-  3. Implement code, add tests if applicable.
-  4. Open a pull request describing changes.
-
-Final notes
------------
-This README summarizes the repository structure and how to run and interact with the service based on the code found in main.py, database.py, models.py and schemas.py. For exact route paths, parameter names and additional behaviors, check the routers/ directory (routers/users.py and routers/todos.py) and the helper modules auth.py, crud.py and dependencies.py.
