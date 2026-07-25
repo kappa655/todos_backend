@@ -15,19 +15,16 @@ Table of contents
 - Installation
 - Run (development)
 - Database initialization
-- API (summary + examples)
+- API
 - Models & Schemas
-- Notes & development tips
-- Contributing
 
 Stack
 -----
 - Language: Python
-- Framework / runtime: FastAPI
+- Framework: FastAPI
 - Notable libraries:
   - SQLAlchemy (ORM)
   - Pydantic (request/response validation)
-  - python-dotenv (load environment variables)
   - uvicorn (ASGI server)
 
 Features
@@ -64,6 +61,9 @@ Environment
 The application expects environment variables loaded from a .env file or the environment:
 
 - DATABASE_URL — SQLAlchemy database URL (example for SQLite: sqlite:///./test.db, or a Postgres URL like postgresql://user:pass@host:5432/dbname)
+- SECRET_KEY
+- ALGORITHM
+- ACCESS_TOKEN_EXPIRE_MINUTES
 
 Installation
 ------------
@@ -102,7 +102,7 @@ Database initialization
   DATABASE_URL=sqlite:///./todos.db
   ```
 
-API (summary)
+API
 ------------------------
 The repository provides two router groups: users and todos. The exact path prefixes are defined in routers/*.py — below are typical endpoints and their request/response shapes inferred from the code (schemas.py). Check routers/ for the exact route paths and any additional parameters or prefixes.
 
