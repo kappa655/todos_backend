@@ -2,12 +2,11 @@ README.md
 
 # todos_backend
 
-Simple FastAPI backend for a Todo application with user registration, authentication, and per-user todo CRUD. It uses SQLAlchemy for persistence and Pydantic schemas for validation. Tables are created automatically on startup.
+FastAPI backend for a Todo application with user registration, user login, authentication, and per-user todo CRUD. A user can create, read, update and delete notes.
 
 ---
 
 Table of contents
-- What this is
 - Stack
 - Features
 - Project structure
@@ -21,36 +20,30 @@ Table of contents
 - Notes & development tips
 - Contributing
 
-What this is
-------------
-A small REST API service that provides user signup/login and CRUD operations for todos owned by users. Intended as the backend for a single-page Todo frontend (CORS configured for localhost dev and a Vercel frontend).
-
 Stack
 -----
-- Language(s): Python 3.x
+- Language: Python
 - Framework / runtime: FastAPI
 - Notable libraries:
   - SQLAlchemy (ORM)
   - Pydantic (request/response validation)
   - python-dotenv (load environment variables)
-  - fastapi[all] / uvicorn (ASGI server)
+  - uvicorn (ASGI server)
 
 Features
 --------
 - User registration and authentication (token-based)
 - Per-user todo items (title, description, completed flag)
 - SQLAlchemy models and automatic table creation on startup
-- CORS middleware configured for local dev and a specific frontend origin
+- CORS middleware configured for local dev and a vercel as frontend
 
 Project structure (top-level)
 -----------------------------
 ```
 .gitignore
 auth.py               # auth utilities (token creation / verification)
-crud.py               # data access functions (create/read/update/delete)
 database.py           # SQLAlchemy engine, SessionLocal, Base, create_session()
-dependencies.py       # FastAPI dependency helpers (e.g., get_current_user)
-eggrafes.py           # (Greek-named file; content for project-specific utilities)
+dependencies.py       # FastAPI dependency helpers (e.g. get_current_user)
 main.py               # FastAPI app, CORS config, include routers, create_all()
 models.py             # SQLAlchemy model definitions: User, Todo
 requirements.txt      # Python dependencies
@@ -64,7 +57,7 @@ How it fits together
 - database.py configures the SQLAlchemy engine using DATABASE_URL from environment variables and exposes a session factory and Base declarative base.
 - models.py defines the User and Todo tables and their relationship (User.todos, Todo.owner).
 - schemas.py defines request/response shapes used by endpoints (user creation, login responses, todo creation/update/response).
-- auth.py, dependencies.py and crud.py implement authentication logic, dependencies for protected endpoints, and the CRUD operations against the DB; routers call those functions to handle HTTP requests.
+- auth.py, dependencies.py implement authentication logic, dependencies for protected endpoints; routers call those functions to handle HTTP requests.
 
 Environment
 -----------
@@ -108,7 +101,6 @@ Database initialization
   ```
   DATABASE_URL=sqlite:///./todos.db
   ```
-- On app start, SQLAlchemy will create the tables defined in models.py. For production we recommend using migrations (Alembic) instead of create_all.
 
 API (summary)
 ------------------------
@@ -173,5 +165,5 @@ Models & Schemas (from code)
   - UserResponse: id, username, email
   - UserLogin / UserLoginResponse: email/password and access_token/token_type
   - TodoCreate: title, optional description
-  - TodoUpdate: title?, description?, completed?
+  - TodoUpdate: title, description, completed
   - TodoResponse: id, title, description, completed
