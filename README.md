@@ -61,9 +61,9 @@ Environment
 The application expects environment variables loaded from a .env file or the environment:
 
 - DATABASE_URL — SQLAlchemy database URL (example for SQLite: sqlite:///./test.db, or a Postgres URL like postgresql://user:pass@host:5432/dbname)
-- SECRET_KEY
-- ALGORITHM
-- ACCESS_TOKEN_EXPIRE_MINUTES
+- SECRET_KEY - unique secret key that only server knows
+- ALGORITHM - the algorithm that will encode the token
+- ACCESS_TOKEN_EXPIRE_MINUTES - the minutes that hold the token as verified 
 
 Installation
 ------------
